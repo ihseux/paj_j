@@ -1,0 +1,28 @@
+
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - Jungo-Jungo</title>
+      {% else %}
+      <title>Welcome to Jungo-Jungo</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+		Jungo-Jungo:
+		 <a href="{{ url_for('index') }}">Home</a>
+		 <a href="{{ url_for('login') }}">Login</a>
+	</div>
+        <hr>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	<ul>
+		{% for message in messages %}
+		<l1>{{ message }} </li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+	{% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
