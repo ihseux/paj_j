@@ -5,18 +5,24 @@ from flask_login import current_user, login_user ,login_required,logout_user
 from app.models import User
 from werkzeug.urls import url_parse
 from datetime import datetime
+from app.forms import PostForm
+from app.models import Post
 
-@app.route('/')
-@app.route('/index')
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
-
 def index():
-	posts = [
-	 {
-		'author':{'username': 'HaoYi'},
-		'body': 'YOIYOOYO'
-	 }
-	]
+	form = PostForm()
+	if form.validate_on_submit():
+		post = Post(body=form.post.data, author=current_user)
+		db.session.add(post)
+		db.session.commit()
+		flash('Your post has been submitted!')
+		return redirect(url_for('index'))
+
+	posts = current_user.followed_posts().all()
+
 	return render_template('index.html',title='Home Page',posts=posts)
 
 @app.route ('/login',methods=['GET','POST'])
@@ -125,4 +131,10 @@ def unfollow(username):
 	db.session.commit()
 	flash('You are currently not longer following {}.'.format(username))
 	return redirect(url_for('user',username=username))
+
+@app.route('/explore')
+@login_required 
+def explore():
+	posts = Post.query.order_by(Post.timestamp.desc()).all()
+	return render_template('index.html',title='Explore', posts=posts)
 
