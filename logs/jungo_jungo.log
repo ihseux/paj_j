@@ -35,3 +35,5 @@ Traceback (most recent call last):
   File "/home/lhy/Project-Altair_Jungo_Jungo/app/templates/_post.html", line 3, in top-level template code
     <td><img src="{{ post.author.avatar(36) }}"></td>
 jinja2.exceptions.UndefinedError: 'None' has no attribute 'avatar'
+$(asctime)s INFO: Jungo Jungo startup [in $(pathname)s:45]
+$(asctime)s INFO: Jungo Jungo startup [in $(pathname)s:45]
